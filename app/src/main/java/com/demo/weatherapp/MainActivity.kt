@@ -13,6 +13,9 @@ import androidx.core.view.WindowInsetsCompat
 import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import okhttp3.OkHttpClient
+import okhttp3.Request
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var cityNameText : TextView
@@ -59,10 +62,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun FetchWeatherData(cityName: String) {
-        TODO("Not yet implemented")
-        var url = "https:api.openweather.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY + "&units=metric"
+        var url =
+            "https:api.openweather.org/data/2.5/weather?q=$cityName&appid=$API_KEY&units=metric"
 
-        var executorService: ExecutorService = Executors.newSingleThreadExecutor()
+        val executorService = Executors.newSingleThreadExecutor()
+
+        executorService.execute {
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url(url)
+                .build()
+
+            try {
+                val response = client.newCall(request).execute()
+                val result = response.body?.string() ?: ""
+
+                runOnUiThread {
+                    updateUI(result)
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+    }
+
+    private fun updateUI(result: String) {
 
     }
 
