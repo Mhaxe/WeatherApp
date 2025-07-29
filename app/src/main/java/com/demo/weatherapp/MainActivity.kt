@@ -15,6 +15,8 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONException
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -93,7 +95,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(result: String) {
+        if (result!=null){
+            try {
+                val jsonObject:JSONObject = JSONObject(result)
+                val main = jsonObject.getJSONObject("main")
+                val temperature = main.getDouble("temp")
+                val humidity = main.getDouble("humidity")
+                val wind = jsonObject.getJSONObject("wind")
+                val windspeed = wind.getDouble("speed")
 
+                val weather = jsonObject.getJSONArray("weather")
+                val desription = weather.getJSONObject(0).getString("description")
+                val iconCode = weather.getJSONObject(0).getString("icon")
+                val resourceName = "ic_$iconCode"
+
+
+
+            }catch (e: JSONException){
+                e.printStackTrace()
+            }
+        }
     }
 
     companion object {
