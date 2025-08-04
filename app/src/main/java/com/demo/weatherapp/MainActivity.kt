@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun FetchWeatherData(cityName: String) {
-        var url =
-            "https:api.openweather.org/data/2.5/weather?q=$cityName&appid=$API_KEY&units=metric"
+        val url = "https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$API_KEY&units=metric"
+
 
         val executorService = Executors.newSingleThreadExecutor()
 
@@ -102,12 +102,28 @@ class MainActivity : AppCompatActivity() {
                 val temperature = main.getDouble("temp")
                 val humidity = main.getDouble("humidity")
                 val wind = jsonObject.getJSONObject("wind")
-                val windspeed = wind.getDouble("speed")
-
+                val windSpeed = wind.getDouble("speed")
+                val cityName = jsonObject.getString("name")
                 val weather = jsonObject.getJSONArray("weather")
-                val desription = weather.getJSONObject(0).getString("description")
+                val description = weather.getJSONObject(0).getString("description")
                 val iconCode = weather.getJSONObject(0).getString("icon")
                 val resourceName = "ic_$iconCode"
+
+                val resId = resources.getIdentifier(resourceName,"drawable",packageName)
+
+                if(resId != 0){
+                    weatherIcon.setImageResource(resId)
+                }else{
+                    weatherIcon.setImageResource(R.drawable.placeholder)
+                }
+
+                //set ui
+                cityNameText.text = cityName
+                temperatureText.text = temperature.toString()
+                humidityText.text = humidity.toString()
+                descriptionText.text = description.toString()
+                windText.text =windSpeed.toString()
+
 
 
 

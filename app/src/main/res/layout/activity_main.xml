@@ -133,7 +133,7 @@
         android:layout_marginTop="20dp"
         android:elevation="12dp"
         android:contentDescription="Weather Icon"
-        android:src="@drawable/sun"
+        android:src="@drawable/ic_01d"
         />
 
     <TextView
@@ -154,7 +154,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/descriptionText"
-        android:textColor="#EFEFE"
+        android:textColor="#EFEFEF"
         android:padding="12dp"
         android:hint="Enter City Name"
         android:gravity="center"
